@@ -82,7 +82,7 @@ defmodule EetIolist do
   end
 
   # NIL_EXT
-  defp _term_to_iolist(nil) do
+  defp _term_to_iolist([]) do
     [<< 106 >>]
   end
 
@@ -131,7 +131,7 @@ defmodule EetIolist do
   end
 
   defp _term_to_iolist(_others) do
-    [<< 106 >>] # nil
+    _term_to_iolist(nil)
   end
 
   defp split_improper(list, acc \\ [])
