@@ -101,7 +101,7 @@ defmodule EetIolist do
 
   # BINARY_EXT
   defp _term_to_iolist(binary) when is_binary(binary) do
-    [<< 109, String.length(binary)::size(32)-unsigned >>, binary]
+    [<< 109, :erlang.byte_size(binary)::size(32)-unsigned >>, binary]
   end
 
   defp _term_to_iolist(bitstring) when is_bitstring(bitstring) do
@@ -117,7 +117,7 @@ defmodule EetIolist do
   # SMALL_ATOM_UTF8_EXT and ATOM_UTF8_EXT
   defp _term_to_iolist(atom) when is_atom(atom) do
     binary = Atom.to_string(atom)
-    size = String.length(binary)
+    size = :erlang.byte_size(binary)
 
     header = cond do
       size < 256 ->
@@ -139,7 +139,7 @@ defmodule EetIolist do
     {Enum.reverse(acc), rest}
   end
   defp split_improper([], acc) do
-    {Enum.reverse(acc), nil}
+    {Enum.reverse(acc), []}
   end
   defp split_improper([head | tail], acc) do
     split_improper(tail, [head | acc])
